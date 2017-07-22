@@ -1,0 +1,55 @@
+int solution(int N, string &S) {
+	// write your code in C++14 (g++ 6.2.0)
+	unordered_map<int, int> hash;
+	std::string newS = " ";
+	std::string num = "";
+	char letter;
+	int seatNum;
+	int seat3 = N*3;
+	newS += S;
+	int i = 0;
+
+	for (int j = 1;j<= N*3;j++){
+		hash[j] = 1;
+	}
+
+	int l = newS.length();
+	while (i < l) {
+		if (newS[i] == 32) {
+			while (newS[i + 1] >47 && newS[i + 1] <58) {
+				num += newS[i + 1];
+				i++; // current position
+			}
+			letter = newS[i+1];
+			seatNum = atoi(num.c_str());
+			i++;
+			
+			switch (letter) {
+			case 'A':
+			case 'B':
+			case 'C':
+				hash[(seatNum - 1) * 3 + 1] += 2;
+				break;
+			case 'H':
+			case 'J':
+			case 'K':
+				hash[(seatNum - 1) * 3 + 3] += 2;
+				break;
+			case 'E':
+			case 'F':
+				hash[(seatNum - 1) * 3 + 2] += 2;
+				break;
+			case 'D':
+			case 'G':
+				hash[(seatNum - 1) * 3 + 2] += 1;
+				break;
+			}
+			num = "";
+			i++;
+		}
+	}
+	for (int j = 1; j <= N * 3; j++) {
+		if (hash.find(j)->second > 2) seat3--;
+	}
+	return seat3;
+}
